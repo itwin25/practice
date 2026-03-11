@@ -7,51 +7,49 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int[] building = new int[n];
+        int N = Integer.parseInt(br.readLine()); // 빌딩의 수
+        int[] buildings = new int[N]; // 빌딩
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < n; i++){
-            building[i] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < N; i++) {
+            buildings[i] = Integer.parseInt(st.nextToken());
         }
 
-        int maxCount = 0;
+        int ans = 0;
 
-        // i번째 빌딩을 기준으로 확인
-        for(int i = 0; i < n; i++) {
-            int count = 0;
+        for(int i = 0; i < N; i++){
+            int cnt = 0; // 현재 위치에서 보이는 빌딩 수
 
-            // 1. 왼쪽 탐색 (i-1 부터 0까지 역순으로)
-            double minSlope = 10000000000.0; // 아주 큰 값으로 초기화
+            // 왼쪽 빌딩 찾기
+            double minSlope = 1000000000.0;
+            for(int j = i-1; j >= 0; j--){
+                // y증가량/x증가량
+                double slope = (double)(buildings[i] - buildings[j]) / (i - j);
 
-            for(int j = i - 1; j >= 0; j--) {
-                // 기울기 계산: (높이차) / (거리차)
-                double slope = (double)(building[i] - building[j]) / (i - j);
-
-                if(slope < minSlope) { // 기울기가 더 작아지면 보임
-                    count++;
-                    minSlope = slope; // 최소 기울기 갱신
+                if (slope < minSlope){
+                    minSlope = slope;
+                    cnt++;
                 }
             }
 
-            // 2. 오른쪽 탐색 (i+1 부터 n-1까지)
-            double maxSlope = -10000000000.0; // 아주 작은 값으로 초기화
+            // 오른쪽 빌딩 찾기
+            double maxSlope = -1000000000.0;
+            for(int j = i+1; j < N; j++){
+                // y증가량/x증가량
+                double slope = (double)(buildings[i] - buildings[j]) / (i - j);
 
-            for(int j = i + 1; j < n; j++) {
-                double slope = (double)(building[i] - building[j]) / (i - j);
-
-                if(slope > maxSlope) { // 기울기가 더 커지면 보임
-                    count++;
-                    maxSlope = slope; // 최대 기울기 갱신
+                if (slope > maxSlope){
+                    maxSlope = slope;
+                    cnt++;
                 }
             }
 
-            // 정답 갱신
-            if(count > maxCount) {
-                maxCount = count;
+            if (cnt > ans){
+                ans = cnt;
             }
         }
 
-        System.out.println(maxCount);
+        System.out.println(ans);
+
     }
 }
