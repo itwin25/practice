@@ -1,31 +1,35 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		String s = sc.nextLine();
-		int arr[] = new int[26];
-		int max = -1;
-		char ans = ' ';
+        String word = br.readLine(); // 단어
+        int[] alphabet = new int[26]; // 알파벳 배열
 
-		s = s.toLowerCase();
+        word = word.toUpperCase(); // 대문자로 변환
 
-		for (int i = 0; i < s.length(); i++) {
-			arr[s.charAt(i) - 97]++;
-		}
+        // 알파벳 개수 세기
+        for (int i = 0; i < word.length(); i++) {
+            alphabet[word.charAt(i) - 'A']++;
+        }
 
-		for (int i = 0; i < 26; i++) {
-			if (arr[i] > max) {
-				max = arr[i];
-				ans = (char) (i + 97);
-			} else if (arr[i] == max) {
-				ans = '?';
-			}
+        int max = 0; // 최댓값
+        char ans = ' '; // 답
 
-		}
+        // 빈출 알파벳 찾기
+        for (int i = 0; i < 26; i++){
+            // 지금 알파벳이 더 많으면
+            if (alphabet[i] > max){
+                max = alphabet[i];
+                ans = (char)(i + 'A');
+            } else if (alphabet[i] == max){ // 최대 빈출 알파벳이 또 있으면
+                ans = '?';
+            }
+        }
 
-		System.out.println(Character.toUpperCase(ans));
-
-	} // main
+        System.out.println(ans);
+    }
 }
